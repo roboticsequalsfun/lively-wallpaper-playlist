@@ -39,9 +39,6 @@ Settings:
   
   \SaveData\wptmp
 
-  Then use:
-  `C:\Users\Name\Videos\Lively Wallpapers\SaveData\wptmp`
-
 - **delay_seconds**  
   How often wallpapers change (in seconds)
 
