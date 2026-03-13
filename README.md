@@ -62,3 +62,4 @@ Settings:
 - Automatic Lively detection
 - Startup launch option
 - System tray control
+- Fix everything. Fix the universe.
