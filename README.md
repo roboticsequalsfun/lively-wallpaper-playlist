@@ -49,9 +49,7 @@ Settings:
 
 ## 🧩 Planned Features
 
-- Fix the launcher to support more devices  
-- A custom settings window instead of editing the config file manually  
-- Automatic Lively detection  
-- Startup launch option  
-- System tray control  
-- Fix everything. Fix the universe.
+- Make the launcher support more devices and be more intuitive
+- Add a custom settings window instead of manually editing the config file
+- Automatic detection of Lively Wallpaper’s install location
+- Optionally allow selecting which wallpapers are included
