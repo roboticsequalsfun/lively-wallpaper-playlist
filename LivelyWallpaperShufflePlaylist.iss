@@ -1,6 +1,6 @@
 [Setup]
 AppName=LivelyShufflePlaylist
-AppVersion=1.0
+AppVersion=0.5.0-alpha
 AppPublisher=RoboticsEqualsFun
 AppId=LivelyShufflePlaylist
 AppPublisherURL=https://github.com/followedmefully/Lively-Wallpaper-Playlist
