@@ -14,20 +14,18 @@ Download the latest installer from the **[Releases page](https://github.com/foll
 ## 🚀 Installation
 
 1. Download the installer.
-2. Run the installer and follow the instructions. (Note: windows will try blocking the program since it uses a python executable. Just click more info, annd then press run anyway.)
-3. If it says lively could not be found, it is one of two reasons:
-  1. It was installed from microsoft store
-  2. It was not installed in the default folder
-     In that case, locate where Lively is installed. For Microsoft Store installs, it’s usually:
-     `%LocalAppData%\\Packages\\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\\LocalCache\\Local`
-     or
-     `%LocalAppData%\\Packages\\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\\Build`
+2. Run the installer and follow the instructions. (Note: Windows SmartScreen may warn that the app is from an unknown publisher. Click **More info → Run anyway** to continue.)
+3. If Lively cannot be found, manually locate `Lively.exe`
+   Microsoft Store installs are usually located in:
+   `%LocalAppData%\\Packages\\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\\LocalCache\\Local`
+   or
+   `%LocalAppData%\\Packages\\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\\Build`
 4. When it asks for monitor numbers, check your Lively Wallpaper monitor settings and use that (Note: It must have comma's between monitor numbers, e.g`1,2`).
 5. When it asks for the folder containing your Lively wallpapers, open Lively → Settings → General → **Wallpaper Directory** and use that path.
 
 ## 🧠 Configuration
 
-Edit `config.json` to change settings.
+To configure settings, right click on the system tray icon and press Edit Config. `config.json` Will now open up.
 
 Settings:
 
@@ -37,7 +35,7 @@ Settings:
 
   In Lively:  
   Settings → General → click **Wallpaper Directory** and copy that path.  
-  **Important:** The folder shown by Lively is **not** the final folder. After copying it, append `\SaveData\wptmp`.
+  #### ⚠**IMPORTANT:** The folder shown by Lively is **not** the final folder. After copying it, **append** `\SaveData\wptmp`.
 
 - **delay_seconds**  
   How often wallpapers change (in seconds).
@@ -52,16 +50,16 @@ Settings:
 
 - Automatically cycles through saved Lively wallpapers
 - Supports multiple monitors
-- Configurable change interval
+- Configurable settigns
 - Lightweight background utility
 - Easy to use
+- System tray icon
+- Single-instance enforcement
 
 ## 🧩 Planned Features
 
 ### 🎯 Usability & Interface
 
-- **System tray support** – Keep it running in the background with an icon for quick access.
-- **Single instance enforcement** – Prevent multiple copies from running at the same time.
 - **Graphical settings window** – A more intuitive way to change the programs settings.
 - **Drag-and-drop wallpaper selection** – Let users select which wallpapers are included/excluded.
 - **Built-in path detection** – Auto-detect Lively install folder, wallpaper folder, and monitors, even for Microsoft Store installs.
