@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lively Wallpaper Playlist</title>
+</head>
+
+<body>
+
+<h1>Lively Wallpaper Playlist</h1>
+
+<p>
+A lightweight utility that automatically cycles through your saved Lively wallpapers and assigns random wallpapers to each monitor at a configurable interval. It is currently in alpha release.
+</p>
+
+<h2>📥 Download</h2>
+<p>
+Download the latest installer from the 
+<a href="https://github.com/followedmefully/Lively-Wallpaper-Playlist/releases/tag/v0.5-alpha">
+Releases page
+</a>
+and run the .exe installer.
+</p>
+
+<h2>⚙ Requirements</h2>
+<ul>
+    <li>Lively Wallpaper installed</li>
+    <li>Windows 10 or newer</li>
+</ul>
+
+<h2>🚀 Installation</h2>
+<ol>
+    <li>Download the installer.</li>
+    <li>Run the installer and follow the instructions. (Windows SmartScreen may warn about unknown publisher. Click More info → Run anyway.)</li>
+    <li>
+        If Lively cannot be found, manually locate <code>Lively.exe</code><br>
+        Microsoft Store installs are usually located in:
+        <br>
+        <code>%LocalAppData%\Packages\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\LocalCache\Local</code><br>
+        or<br>
+        <code>%LocalAppData%\Packages\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\Build</code>
+    </li>
+    <li>
+        When it asks for monitor numbers, use Lively settings (comma separated, e.g. <code>1,2</code>).
+    </li>
+    <li>
+        When selecting wallpaper folder, go to Lively → Settings → General → Wallpaper Directory.
+    </li>
+</ol>
+
+<h2>🧠 Configuration</h2>
+<p>
+Right click system tray icon → Edit Config → config.json opens.
+</p>
+
+<h3>Settings</h3>
+
+<h4>wallpaper_folder</h4>
+<p>
+Folder containing Lively wallpapers.<br>
+In Lively: Settings → General → Wallpaper Directory<br>
+<strong>IMPORTANT:</strong> Append <code>\SaveData\wptmp</code> to the path.
+</p>
+
+<h4>delay_seconds</h4>
+<p>
+How often wallpapers change (in seconds).
+</p>
+
+<h4>monitors</h4>
+<p>
+Monitor numbers (comma separated, e.g. <code>1,2</code>).
+</p>
+
+<h4>lively_path</h4>
+<p>
+Path to Lively.exe (usually auto-detected).
+</p>
+
+<h2>✨ Features</h2>
+<ul>
+    <li>Automatically cycles through saved Lively wallpapers</li>
+    <li>Supports multiple monitors</li>
+    <li>Configurable settings</li>
+    <li>Lightweight background utility</li>
+    <li>System tray icon</li>
+    <li>Single-instance enforcement</li>
+</ul>
+
+<h2>🧩 Planned Features</h2>
+
+<h3>🎯 Usability & Interface</h3>
+<ul>
+    <li>Graphical settings window</li>
+    <li>Drag-and-drop wallpaper selection</li>
+    <li>Auto-detect install folders and monitors</li>
+</ul>
+
+<h3>⚡ Functionality</h3>
+<ul>
+    <li>Shuffle modes (random, sequential, weighted)</li>
+    <li>Per-monitor wallpaper control</li>
+    <li>Scheduled wallpaper changes</li>
+    <li>Backup & restore settings</li>
+</ul>
+
+<h3>🧩 Advanced Features</h3>
+<ul>
+    <li>Wallpaper tagging system</li>
+    <li>Multi-folder support</li>
+    <li>Lively playlist integration</li>
+    <li>Logging & error reporting</li>
+    <li>Weather-based wallpaper mode</li>
+</ul>
+
+</body>
+</html>
