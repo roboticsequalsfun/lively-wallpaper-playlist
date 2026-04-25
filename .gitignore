@@ -1,3 +1,3 @@
-# Ignore the license and README to prevent conflicts
-README.md
-logs/LivelyShufflePlaylist.log
+venv/
+LivelyPlaylistInstaller.exe
+logs/
