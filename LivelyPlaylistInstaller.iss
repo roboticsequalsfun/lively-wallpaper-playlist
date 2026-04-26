@@ -2,7 +2,7 @@
 AppName=LivelyPlaylist
 AppVersion=0.5.0-alpha
 AppPublisher=RoboticsEqualsFun
-AppId={EE44DAA9-EE3D-43D0-9B0F-CA9E9BD3966D}
+AppId={{EE44DAA9-EE3D-43D0-9B0F-CA9E9BD3966D}}
 AppPublisherURL=https://github.com/followedmefully/Lively-Wallpaper-Playlist
 DefaultDirName={autopf}\LivelyPlaylist
 PrivilegesRequiredOverridesAllowed=dialog
