@@ -1,6 +1,6 @@
 {
     "wallpaper_folder": "C:\\Users\\%USERNAME%\\Videos\\lively_wallpapers\\lively-save\\SaveData\\wptmp",
     "delay_seconds": 3600,
-    "monitors": [1],
+    "monitors": [1, 2],
     "lively_path": "C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Lively Wallpaper\\Lively.exe"
 }
