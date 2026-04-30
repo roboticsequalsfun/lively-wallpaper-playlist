@@ -71,7 +71,7 @@ The log files are automatically generated and stored in the same directory as yo
 
 If anything goes wrong or behaves unexpectedly, checking the logs is the first step for debugging or reporting issues.
 
-## Features
+## ⚙️ Features
 
 - Runs in the system tray
 - Automatically detects when config changes and applies new settings without needing to restart
