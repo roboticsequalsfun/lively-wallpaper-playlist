@@ -46,15 +46,42 @@ Settings:
 - **lively_path**  
   Path to `Lively.exe`. Usually does not need changing, unless lively has been reinstalled
 
-## Features
+## 📃 Logging
 
-- Automatically cycles through saved Lively wallpapers
-- Supports multiple monitors
-- Configurable settigns
-- Lightweight background utility
-- Easy to use
-- System tray icon
-- Single-instance enforcement
+Lively Playlist now includes a built-in logging system to help track activity, diagnose issues, and understand how the application is behaving behind the scenes.
+
+The log files are automatically generated and stored in the same directory as your configuration file, inside a dedicated logs subfolder.
+
+### 📍 How to find your log files:
+   1. **Start Lively Playlist**
+      Launch the application normally so it initializes its configuration and logging system.
+   2. **Open the system tray menu**
+      Locate the Lively Playlist icon in your system tray (bottom-right corner of your screen).
+   3. **Access the config location**
+      Right-click the tray icon and select “Open Config”.
+   4. **Open folder automatically**
+      This will open your default file editor or file explorer directly at the configuration file location.
+   
+   5. **Locate the logs folder**
+      In the same directory where the config file is stored, you will find a folder named:
+   
+   `logs/`
+   
+   This folder contains all generated log files.
+
+If anything goes wrong or behaves unexpectedly, checking the logs is the first step for debugging or reporting issues.
+
+## ⚙️ Features
+
+- Runs in the system tray
+- Automatically detects when config changes and applies new settings without needing to restart
+- Uses the Lively Wallpaper command-line tool to set wallpapers, allowing it to work with both local and web wallpapers saved in Lively
+- Logs all actions and errors to a log file with a unique instance ID for easier debugging when multiple instances are accidentally opened
+- Enforces a single running instance
+- Randomly chooses wallpapers from subfolders of the specified directory
+- Easy shutdown and restart of the wallpaper shuffling thread when config changes or when the user clicks "Next Wallpaper" in the menu
+- Works with multiple monitors
+- Configurable via config.json
 
 ## 🧩 Planned Features
 
@@ -63,6 +90,8 @@ Settings:
 - **Graphical settings window** – A more intuitive way to change the programs settings.
 - **Drag-and-drop wallpaper selection** – Let users select which wallpapers are included/excluded.
 - **Built-in path detection** – Auto-detect Lively install folder, wallpaper folder, and monitors, even for Microsoft Store installs.
+- **Open logs tray option** – A system tray option that opens the current instance’s log file.
+- **Improved logging system** – Separate logs per instance and a global main log for system events, with log rotation to prevent files from growing too large.
 
 ### ⚡ Functionality
 
@@ -75,6 +104,5 @@ Settings:
 
 - **Wallpaper tagging** – Let users tag wallpapers by category and filter which ones appear.
 - **Multi-folder support** – Pull wallpapers from multiple directories.
-- **Integration with Lively playlists** – Detect Lively’s internal playlists and work with them.
 - **Logging & error reporting** – Log failed wallpaper changes or invalid monitor numbers.
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
