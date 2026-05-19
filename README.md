@@ -49,27 +49,34 @@ Settings:
 ## 📃 Logging
 
 Lively Playlist now includes a built-in logging system to help track activity, diagnose issues, and understand how the application is behaving behind the scenes.
-
 The log files are automatically generated and stored in the same directory as your configuration file, inside a dedicated logs subfolder.
 
-### 📍 How to find your log files:
-   1. **Start Lively Playlist**
-      Launch the application normally so it initializes its configuration and logging system.
-   2. **Open the system tray menu**
-      Locate the Lively Playlist icon in your system tray (bottom-right corner of your screen).
-   3. **Access the config location**
-      Right-click the tray icon and select “Open Config”.
-   4. **Open folder automatically**
-      This will open your default file editor or file explorer directly at the configuration file location.
-   
-   5. **Locate the logs folder**
-      In the same directory where the config file is stored, you will find a folder named:
-   
-   `logs/`
-   
-   This folder contains all generated log files.
+To Open the log, right click on the system tray icon and press Open Log. It will now open the current instances log in the default text editor. **NOTE:** Currently there is only one Mega Log, but in the future it is planned for each instance to have a seperate log.
 
 If anything goes wrong or behaves unexpectedly, checking the logs is the first step for debugging or reporting issues.
+
+### 📝 Logging Explanation
+
+To understand what each part of a log means, let’s look at this example:
+
+`[HASH] YYYY-MM-DD HH:MM:SS [LEVEL] Message`
+
+Now let’s break down each section:
+
+- `[HASH]`   
+   This is the instance hash. It acts as a unique identifier for each running instance of the program, allowing you to tell which instance generated a specific log message.
+
+- `YYYY-MM-DD HH:MM:SS`   
+   This is the timestamp showing the exact date and time the log message was created.
+  
+- `[LEVEL]`   
+   This is the log level identifier. It indicates the type or severity of the message. There are three levels:
+   - INFO — Normal messages that describe what the application is currently doing.
+   - WARNING — Something is not quite right, but the application can still continue running normally.
+   - ERROR — A failure or serious issue occurred that may affect functionality.
+
+- `Message`   
+  This is the actual log message describing what happened.
 
 ## ⚙️ Features
 
@@ -90,19 +97,19 @@ If anything goes wrong or behaves unexpectedly, checking the logs is the first s
 - **Graphical settings window** – A more intuitive way to change the programs settings.
 - **Drag-and-drop wallpaper selection** – Let users select which wallpapers are included/excluded.
 - **Built-in path detection** – Auto-detect Lively install folder, wallpaper folder, and monitors, even for Microsoft Store installs.
-- **Open logs tray option** – A system tray option that opens the current instance’s log file.
 - **Improved logging system** – Separate logs per instance and a global main log for system events, with log rotation to prevent files from growing too large.
+- **Automatic update checking** – Automatically check for new versions and alert user if there is.
 
 ### ⚡ Functionality
 
 - **Shuffle modes** – Random, sequential, or weighted random playlists.
 - **Per-monitor wallpaper control** – Assign specific wallpapers to certain monitors.
 - **Scheduled changes** – Change wallpapers based on time of day or custom schedule.
-- **Backup & restore settings** – Save user configurations for easy recovery.
+- **Backup & restore settings** – Save user configurations for easy updating.
 
 ### 🧩 Advanced Features
 
 - **Wallpaper tagging** – Let users tag wallpapers by category and filter which ones appear.
 - **Multi-folder support** – Pull wallpapers from multiple directories.
-- **Logging & error reporting** – Log failed wallpaper changes or invalid monitor numbers.
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
+- **Automatic updating** – Automatically update the system and alert user that the program was update
