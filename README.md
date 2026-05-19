@@ -4,7 +4,7 @@ A lightweight utility that automatically cycles through your saved Lively wallpa
 
 ## 📥 Download
 
-Download the latest installer from the **[Releases page](https://github.com/followedmefully/Lively-Wallpaper-Playlist/releases/tag/v0.5-alpha)** and run the `.exe` installer.
+Download the latest installer from the **[Releases page](https://github.com/followedmefully/Lively-Wallpaper-Playlist/releases/latest)** and run the `.exe` installer.
 
 ## ⚙ Requirements
 
