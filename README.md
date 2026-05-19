@@ -46,6 +46,9 @@ Settings:
 - **lively_path**  
   Path to `Lively.exe`. Usually does not need changing, unless lively has been reinstalled
 
+- **port**
+  The port the instances communicate on. You do not need to change it unless another program is using it. Which is almost never.
+
 ## 📃 Logging
 
 Lively Playlist now includes a built-in logging system to help track activity, diagnose issues, and understand how the application is behaving behind the scenes.
