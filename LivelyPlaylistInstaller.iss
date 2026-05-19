@@ -17,7 +17,7 @@ CloseApplications=yes
 [Files]
 Source: "LivelyPlaylist.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "config.json"; DestDir: "{userappdata}\LivelyPlaylist"; Flags: onlyifdoesntexist
-Source: "icon.ico"; DestDir: "{userappdata}"; Flags: ignoreversion; Attribs: hidden
+Source: "icon.ico"; DestDir: "{userappdata}\LivelyPlaylist"; Flags: ignoreversion; Attribs: hidden
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional shortcuts:"
