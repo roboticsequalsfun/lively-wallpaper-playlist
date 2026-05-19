@@ -92,6 +92,11 @@ class AppController:
         self.engine.running = False
         os._exit(0)
 
+    def open_logs(self):
+        """Opens the logs directory in the file explorer."""
+        logging.info("Opening logs directory...")
+        os.startfile(self.vars["logs_dir"]/"lively-playlist.log")
+
     def configure(self):
         random.seed(time.time())
         # ---------------- Find paths based on if it is in executable form or script form ----------------
@@ -415,8 +420,9 @@ class UIManager:
             icon_image, 
             "Lively Playlist", 
             menu=pystray.Menu(
-                pystray.MenuItem("Open Config", lambda: self.config_manager.open()),
                 pystray.MenuItem("Quit", lambda : self.app_controller.stop()),
+                pystray.MenuItem("Open Config", lambda: self.config_manager.open()),
+                pystray.MenuItem("Open Logs", lambda : self.app_controller.open_logs()),
                 pystray.MenuItem("Next Wallpaper", lambda: self.next_wallpaper())
             )
         )
