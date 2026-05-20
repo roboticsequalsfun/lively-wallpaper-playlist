@@ -116,3 +116,11 @@ Now let’s break down each section:
 - **Multi-folder support** – Pull wallpapers from multiple directories.
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
 - **Automatic updating** – Automatically update the system and alert user that the program was update
+
+### 💬 Feedback & Contributions
+
+If you try this project, I’d love to hear what you think.
+
+- 🐛 Found a bug? Open an issue
+- 💡 Have an idea? Suggest a feature
+- ⭐ Like the project? Consider starring it
