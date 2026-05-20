@@ -117,7 +117,7 @@ Now let’s break down each section:
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
 - **Automatic updating** – Automatically update the system and alert user that the program was update
 
-### 💬 Feedback & Contributions
+## 💬 Feedback & Contributions
 
 If you try this project, I’d love to hear what you think.
 
