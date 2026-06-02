@@ -1,6 +1,7 @@
-# Development files
+# Dev stuff
 venv/
 logs/
+playlist.bat
 
 # Build files
 dist/
