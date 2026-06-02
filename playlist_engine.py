@@ -170,6 +170,7 @@ class WallpaperEngine:
             daemon=True
         )
         self.thread.start()
+        self.listen_for_config_changes(self.config_manager.path)
         logging.info("Started wallpaper shuffler thread.")
 
     def stop(self):
@@ -248,7 +249,7 @@ class WallpaperEngine:
         """
         logging.info(f"Starting to watch config file for changes: {config_path}")
         last_modified = os.path.getmtime(config_path)
-        while True:
+        while self.running:
             time.sleep(1)
             try:
                 current_modified = os.path.getmtime(config_path)
@@ -420,10 +421,10 @@ class UIManager:
             icon_image, 
             "Lively Playlist", 
             menu=pystray.Menu(
-                pystray.MenuItem("Quit", lambda : self.app_controller.stop()),
                 pystray.MenuItem("Open Config", lambda: self.config_manager.open()),
                 pystray.MenuItem("Open Logs", lambda : self.app_controller.open_logs()),
-                pystray.MenuItem("Next Wallpaper", lambda: self.next_wallpaper())
+                pystray.MenuItem("Next Wallpaper", lambda: self.next_wallpaper()),
+                pystray.MenuItem("Quit", lambda : self.app_controller.stop())
             )
         )
 

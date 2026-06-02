@@ -1,4 +1,13 @@
+# Development files
 venv/
+logs/
+
+# Build files
+dist/
 LivelyPlaylistInstaller.exe
 LivelyPlaylist.exe
-logs/
+
+# IDE files
+.vscode/
+.vs/
+*.code-workspace
