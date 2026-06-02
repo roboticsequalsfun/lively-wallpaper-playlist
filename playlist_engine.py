@@ -430,9 +430,6 @@ class UIManager:
 
         logging.info("Tray icon and menu set up successfully")
 
-def main(): 
+if __name__ == "__main__":
     app = AppController()
     app.start()
-
-if __name__ == "__main__":
-    main()
