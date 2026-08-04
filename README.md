@@ -85,7 +85,6 @@ Now let’s break down each section:
 
 - Runs in the system tray
 - Automatically detects when config changes and applies new settings without needing to restart
-- Uses the Lively Wallpaper command-line tool to set wallpapers, allowing it to work with both local and web wallpapers saved in Lively
 - Logs all actions and errors to a log file with a unique instance ID for easier debugging when multiple instances are accidentally opened
 - Enforces a single running instance
 - Randomly chooses wallpapers from subfolders of the specified directory
