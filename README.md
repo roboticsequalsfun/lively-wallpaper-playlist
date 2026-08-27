@@ -114,7 +114,7 @@ Now let’s break down each section:
 - **Wallpaper tagging** – Let users tag wallpapers by category and filter which ones appear.
 - **Multi-folder support** – Pull wallpapers from multiple directories.
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
-- **Automatic updating** – Automatically update the system and alert user that the program was update
+- **Automatic updating** – Automatically update the system and alert user that the program was updated
 
 ## 💬 Feedback & Contributions
 
