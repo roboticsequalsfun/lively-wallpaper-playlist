@@ -29,7 +29,7 @@ To configure settings, right click on the system tray icon and press Edit Config
 
 Settings:
 
-- **wallpaper_folder**  
+- `wallpaper_folder`   
   The folder containing your Lively wallpapers.  
   This must point to Lively’s saved wallpaper folder.
 
@@ -37,16 +37,16 @@ Settings:
   Settings → General → click **Wallpaper Directory** and copy that path.  
   #### ⚠**IMPORTANT:** The folder shown by Lively is **not** the final folder. After copying it, **append** `\SaveData\wptmp`.
 
-- **delay_seconds**  
+- `delay_seconds`    
   How often wallpapers change (in seconds).
 
-- **monitors**  
+- `monitors`    
   Monitor numbers matching Lively monitor numbering with comma's between monitor numbers (e.g., `1,2`).
 
-- **lively_path**  
+- `lively_path`   
   Path to `Lively.exe`. Usually does not need changing, unless lively has been reinstalled
 
-- **port**
+- `port`   
   The port the instances communicate on. You do not need to change it unless another program is using it. Which is almost never.
 
 ## 📃 Logging
@@ -60,7 +60,7 @@ If anything goes wrong or behaves unexpectedly, checking the logs is the first s
 
 ### 📝 Logging Explanation
 
-To understand what each part of a log means, let’s look at this example:
+To understand lets analyze the parts of the log message:
 
 `[HASH] YYYY-MM-DD HH:MM:SS [LEVEL] Message`
 
@@ -85,7 +85,6 @@ Now let’s break down each section:
 
 - Runs in the system tray
 - Automatically detects when config changes and applies new settings without needing to restart
-- Uses the Lively Wallpaper command-line tool to set wallpapers, allowing it to work with both local and web wallpapers saved in Lively
 - Logs all actions and errors to a log file with a unique instance ID for easier debugging when multiple instances are accidentally opened
 - Enforces a single running instance
 - Randomly chooses wallpapers from subfolders of the specified directory
@@ -115,7 +114,7 @@ Now let’s break down each section:
 - **Wallpaper tagging** – Let users tag wallpapers by category and filter which ones appear.
 - **Multi-folder support** – Pull wallpapers from multiple directories.
 - **Weather based wallpaper mode** - Wallpaper set by catergory based on weather and time. (User defines wallpapers for each catergory)
-- **Automatic updating** – Automatically update the system and alert user that the program was update
+- **Automatic updating** – Automatically update the system and alert user that the program was updated
 
 ## 💬 Feedback & Contributions
 
