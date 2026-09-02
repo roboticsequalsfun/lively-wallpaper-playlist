@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="/qt/qml/gui">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/gui</file>
+
+  </qresource>
+</RCC>

@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="/qt/qml/gui/">
+    <file alias="fonts/SpaceGrotesk-Regular.ttf">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/fonts/SpaceGrotesk-Regular.ttf</file>
+    <file alias="fonts/Nunito-Regular.ttf">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/fonts/Nunito-Regular.ttf</file>
+    <file alias="fonts/Roboto-Regular.ttf">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/fonts/Roboto-Regular.ttf</file>
+    <file alias="images/night.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/night.png</file>
+    <file alias="images/sun.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/sun.png</file>
+    <file alias="images/more.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/more.png</file>
+    <file alias="images/bug.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/bug.png</file>
+    <file alias="images/folder.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/folder.png</file>
+    <file alias="images/gear.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/gear.png</file>
+    <file alias="images/home.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/home.png</file>
+    <file alias="images/icon.ico">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/icon.ico</file>
+    <file alias="images/settings.png">C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/images/settings.png</file>
+  </qresource>
+</RCC>
+

@@ -1,6 +1,6 @@
 [Setup]
 AppName=Lively Playlist
-AppVersion=2.1.2-alpha
+AppVersion=2.1.2
 AppPublisher=RoboticsEqualsFun
 AppId={{EE44DAA9-EE3D-43D0-9B0F-CA9E9BD3966D}}
 AppPublisherURL=https://github.com/roboticsequalsfun/Lively-Wallpaper-Playlist
@@ -15,9 +15,9 @@ WizardStyle=modern
 CloseApplications=yes
 
 [Files]
-Source: "LivelyPlaylist.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\LivelyPlaylist.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "config.json"; DestDir: "{userappdata}\LivelyPlaylist"; Flags: onlyifdoesntexist
-Source: "icon.ico"; DestDir: "{userappdata}\LivelyPlaylist"; Flags: ignoreversion; Attribs: hidden
+Source: "icons\icon.ico"; DestDir: "{userappdata}\LivelyPlaylist"; Flags: ignoreversion; Attribs: hidden
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional shortcuts:"
@@ -61,6 +61,8 @@ begin
     Result := Path;
     exit;
   end;
+  
+  Path := ExpandConstant('{userlocalappdata}12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\LocalCache\Local\Lively Wallpaper\Lively.exe')
 
   Result := '';
 end;

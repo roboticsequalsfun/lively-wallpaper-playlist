@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/SpaceGrotesk-Regular.ttf</file>
+        <file>images/night.png</file>
+        <file>images/sun.png</file>
+        <file>images/more.png</file>
+    </qresource>
+</RCC>

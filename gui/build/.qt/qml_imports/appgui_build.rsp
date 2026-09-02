@@ -1,0 +1,15 @@
+-rootPath
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui
+-cmake-output
+-output-file
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/.qt/qml_imports/appgui_build.cmake
+-importPath
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build
+-importPath
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/gui
+-importPath
+C:/Qt/6.11.1/mingw_64/qml
+-qrcFiles
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/.qt/rcc/qmake_gui.qrc
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/.qt/rcc/appgui_raw_qml_0.qrc
+C:/Users/CalebL/Projects/SoftwareProjects/Active/lively-wallpaper-playlist/gui/build/.qt/rcc/appgui_raw_res_0.qrc

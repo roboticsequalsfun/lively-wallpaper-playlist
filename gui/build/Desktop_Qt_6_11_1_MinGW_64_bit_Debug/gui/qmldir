@@ -1,0 +1,17 @@
+module gui
+typeinfo appgui.qmltypes
+prefer :/qt/qml/gui/
+Main 1.0 Main.qml
+HomePage 1.0 HomePage.qml
+GroupingPage 1.0 GroupingPage.qml
+RulesPage 1.0 RulesPage.qml
+SettingsPage 1.0 SettingsPage.qml
+Panel 1.0 Panel.qml
+singleton Theme 1.0 Theme.qml
+BugReport 1.0 BugReport.qml
+TimePicker 1.0 TimePicker.qml
+LightSwitch 1.0 LightSwitch.qml
+SettingsButton 1.0 SettingsButton.qml
+TopbarButton 1.0 TopbarButton.qml
+depends QtQuick
+
