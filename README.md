@@ -2,8 +2,6 @@
 
 A lightweight utility that automatically cycles through your saved Lively wallpapers and assigns random wallpapers to each monitor at a configurable interval.
 
-> **Status:** Alpha Release
-
 ---
 
 ## Table of Contents
