@@ -53,6 +53,7 @@ Item {
 
         onClicked: {
             Theme.isDarkMode ? moveLeft.start() : moveRight.start()
+            configSettings.saveSetting(ConfigSettings.DarkMode, !Theme.isDarkMode)
             Theme.isDarkMode = !Theme.isDarkMode
         }
     }

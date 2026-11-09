@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/fonts/Nunito-Regular.ttf</file>
+        <file>resources/fonts/Roboto-Regular.ttf</file>
+        <file>resources/fonts/SpaceGrotesk-Regular.ttf</file>
+        <file>resources/images/bugBlack.png</file>
+        <file>resources/images/closeWhite.png</file>
+        <file>resources/images/closeBlack.png</file>
+        <file>resources/images/bugWhite.png</file>
+        <file>resources/images/expandWhite.png</file>
+        <file>resources/images/expandBlack.png</file>
+        <file>resources/images/folderBlack.png</file>
+        <file>resources/images/folderWhite.png</file>
+        <file>resources/images/gearBlack.png</file>
+        <file>resources/images/gearWhite.png</file>
+        <file>resources/images/homeBlack.png</file>
+        <file>resources/images/logo.ico</file>
+        <file>resources/images/homeWhite.png</file>
+        <file>resources/images/minusBlack.png</file>
+        <file>resources/images/moonBlack.png</file>
+        <file>resources/images/moonWhite.png</file>
+        <file>resources/images/minusWhite.png</file>
+        <file>resources/images/moreBlack.png</file>
+        <file>resources/images/moreWhite.png</file>
+        <file>resources/images/settingsBlack.png</file>
+        <file>resources/images/settingsWhite.png</file>
+        <file>resources/images/sunBlack.png</file>
+        <file>resources/images/sunWhite.png</file>
+    </qresource>
+</RCC>

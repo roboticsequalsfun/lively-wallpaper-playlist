@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -14,7 +15,7 @@ Button {
     Layout.alignment: Qt.AlignVCenter
 
     background: Rectangle {
-        radius: buttonRadius
+        radius: button.buttonRadius
         anchors.fill: parent
 
         color: button.pressed
@@ -35,7 +36,7 @@ Button {
         }
 
         Text {
-            text: labelText
+            text: button.labelText
             color: Theme.colorPalette.text
             anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 15

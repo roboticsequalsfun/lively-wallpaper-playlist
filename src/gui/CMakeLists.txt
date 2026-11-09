@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
-
 project(gui VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_PREFIX_PATH "C:/Libraries/QWindowKit")
@@ -24,8 +26,18 @@ qt_add_executable(appgui
     main.cpp
 )
 
+target_sources(appgui PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources.qrc"
+)
+
+target_include_directories(appgui PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 set_source_files_properties(Theme.qml
-    PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+    PROPERTIES
+        QT_QML_SINGLETON_TYPE TRUE
+)
 
 qt_add_qml_module(appgui
     URI gui
@@ -33,7 +45,6 @@ qt_add_qml_module(appgui
 
     QML_FILES
         Main.qml
-
         HomePage.qml
         GroupingPage.qml
         RulesPage.qml
@@ -43,38 +54,11 @@ qt_add_qml_module(appgui
         BugReport.qml
         TimePicker.qml
         LightSwitch.qml
-
-    RESOURCES
-        fonts/SpaceGrotesk-Regular.ttf
-        fonts/Nunito-Regular.ttf
-        fonts/Roboto-Regular.ttf
-        images/bugBlack.png
-        images/closeBlack.png
-        images/expandBlack.png
-        images/folderBlack.png
-        images/gearBlack.png
-        images/homeBlack.png
-        images/minusBlack.png
-        images/moonBlack.png
-        images/moreBlack.png
-        images/settingsBlack.png
-        images/sunBlack.png
-        images/closeWhite.png
-        images/expandWhite.png
-        images/folderWhite.png
-        images/gearWhite.png
-        images/homeWhite.png
-        images/minusWhite.png
-        images/moonWhite.png
-        images/moreWhite.png
-        images/settingsWhite.png
-        images/sunWhite.png
-        images/logo.ico
-        images/bugWhite.png
-        QML_FILES
-        QML_FILES
-        QML_FILES SettingsButton.qml
-        QML_FILES TopbarButton.qml
+        SettingsButton.qml
+        TopbarButton.qml
+    SOURCES
+    configSettings.h
+        configSettings.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

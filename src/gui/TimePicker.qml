@@ -1,5 +1,5 @@
+pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
@@ -42,8 +42,10 @@ Popup {
             function formatText(count, modelData, pad) {
                 var data = count === 12 ? modelData + 1 : modelData;
                 if (pad) {
+                    console.log("Formatted data:", data);
                     return data < 10 ? "0" + data : data.toString();
                 }
+                console.log("Data:", data);
                 return data.toString();
             }
         }
@@ -139,8 +141,6 @@ Popup {
                 font.pixelSize: 15
                 font.family: Theme.fonts.main
             }
-
-            onClicked: popup.close()
         }
     }
 }

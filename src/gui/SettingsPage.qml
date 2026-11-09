@@ -88,8 +88,8 @@ ColumnLayout {
         labelText: "Wallpaper Shuffle Delay"
 
         Label {
-            text: "1:05:30"
-            font.family: Theme.fonts.main
+            text: configSettings.getSetting(ConfigSettings.Delay)
+            font.family: Theme.fonts["main"]
             color: Theme.colorPalette.text
             font.pixelSize: 20
             anchors {
@@ -114,7 +114,7 @@ ColumnLayout {
         labelText: "Path to Lively Installation"
 
         SettingsButton {
-            labelText: "Delay"
+            labelText: "Browse"
             anchors {
                 right: parent.right
                 verticalCenter: parent.verticalCenter
@@ -128,6 +128,7 @@ ColumnLayout {
             id: livelyInstallation
             currentFolder: "file:///C:/"
             nameFilters: ["EXE files(*.exe)"]
+            onAccepted: configSettings.saveSetting(ConfigSettings.LivelyPath, selectedFile)
         }
     }
 
@@ -136,7 +137,7 @@ ColumnLayout {
         labelText: "Path to Wallpapers"
 
         SettingsButton {
-            labelText: "Delay"
+            labelText: "Browse"
             anchors {
                 right: parent.right
                 verticalCenter: parent.verticalCenter
@@ -149,6 +150,7 @@ ColumnLayout {
         FolderDialog {
             id: livelyWallpapers
             currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
+            onAccepted: configSettings.saveSetting(ConfigSettings.WallpaperPath, selectedFolder)
         }
     }
 
@@ -167,6 +169,5 @@ ColumnLayout {
 
     TimePicker {
         id: timePicker
-        anchors.centerIn: parent
     }
 }

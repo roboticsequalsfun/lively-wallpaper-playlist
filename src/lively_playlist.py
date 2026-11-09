@@ -73,7 +73,7 @@ class AppController:
         self.config = ConfigManager(self.config_path)
         self.instance = IPCManager(self.config, self)
         self.engine = WallpaperEngine(self.config)
-        self.ui = UIManager(self.engine, self.config, self)
+        self.ui = UIManager(self.engine, self.config, self, icon_path=self.vars["icon_path"])
 
     def start(self):
         """Starts the application by starting the IPC listener thread, wallpaper shuffling thread, and system tray UI."""
@@ -102,8 +102,9 @@ class AppController:
         # ---------------- Find paths based on if it is in executable form or script form ----------------
 
         # Set the bool based on if it is frozen (executable) or not (script)
-        is_frozen = getattr(sys, "frozen", False)
-        base_dir = Path(__file__).parent
+        base_dir = Path(__file__).parent.parent.parent
+        is_frozen = not Path(base_dir / "../.." / "frozen.txt").exists()
+
 
         # Set the paths based on the program state
         if is_frozen:
@@ -142,6 +143,7 @@ class AppController:
             "base_dir": base_dir,
             "logs_dir": logs_dir,
             "config_path": config_path,
+            "icon_path": base_dir / "resources" / "images" / "logo.ico"
         }
 
 class WallpaperEngine:
@@ -152,6 +154,7 @@ class WallpaperEngine:
 
         # Load config
         self.config = config_manager.load()
+        self.config_path = config_manager.path
         self.monitors = self.config["monitors"]
         self.wallpaper_folder = self.config["wallpaper_folder"]
         self.lively_path = self.config["lively_path"]
@@ -170,7 +173,7 @@ class WallpaperEngine:
             daemon=True
         )
         self.thread.start()
-        self.listen_for_config_changes(self.config_manager.path)
+        self.listen_for_config_changes(self.config_path)
         logging.info("Started wallpaper shuffler thread.")
 
     def stop(self):
@@ -209,7 +212,9 @@ class WallpaperEngine:
         """Main loop that shuffles wallpapers at the specified interval."""
         while self.running:
             logging.info(f"Shuffling new wallpapers from {self.wallpaper_folder}...")
-            for monitor in self.monitors:
+            i = 0
+            while i < self.monitors:
+                monitor = i + 1  # Monitor numbers are 1-indexed
                 wallpaper = self.get_wallpaper(self.wallpaper_folder)
 
                 if wallpaper:
@@ -229,6 +234,7 @@ class WallpaperEngine:
                         )
                     except subprocess.CalledProcessError as e:
                         logging.error(f"Failed to set wallpaper {wallpaper} on monitor {monitor}: {e}")
+                i += 1
 
             # Wait for a delay before running again
             logging.info(f"Waiting for {self.delay} seconds before next shuffle...")
@@ -372,8 +378,9 @@ class ConfigManager:
 
 # Class that manages the system tray icon and menu, as well as user interactions with the menu
 class UIManager:
-    def __init__(self, engine, config_manager, app_controller):
+    def __init__(self, engine, config_manager, app_controller, icon_path=None):
         self.engine = engine
+        self.icon_path = icon_path
         self.config_manager = config_manager
         self.app_controller = app_controller
         self.icon = None
@@ -409,7 +416,8 @@ class UIManager:
         logging.info("Setting up tray icon and menu...")
         # Load the tray icon image
         try:
-            icon_image = Image.open(self.config_manager.path.parent / "icon.ico")
+            if self.icon_path:
+                icon_image = Image.open(self.icon_path)
             logging.info("Loaded tray icon successfully")
         except Exception as e:
             logging.error(f"Failed to load tray icon: {e}")
