@@ -1,11 +1,8 @@
 {
     "dark_mode": false,
     "delay_seconds": 3700,
-    "lively_path": "C:/Qt/MaintenanceTool.exe",
-    "monitors": [
-        1,
-        2
-    ],
+    "lively_path": "C:\\Users\\CalebL\\AppData\\Local\\Programs\\Lively Wallpaper\\Lively.exe",
+    "monitors": 2,
     "port": 65432,
-    "wallpaper_path": "C:/Users/CalebL/Desktop"
+    "wallpaper_path": "C:\\Users\\CalebL\\Videos\\lively_wallpapers\\lively-save\\SaveData\\wptmp"
 }

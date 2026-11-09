@@ -295,7 +295,7 @@ begin
 
     JSONContent :=
       '{' + #13#10 +
-      '  "wallpaper_folder": "' + TmpWallpaperPath + '",' + #13#10 +
+      '  "wallpaper_path": "' + TmpWallpaperPath + '",' + #13#10 +
       '  "delay_seconds": 2400,' + #13#10 +
       '  "monitors": ' + Monitors + ',' + #13#10 +
       '  "lively_path": "' + TmpLivelyPath + '",' + #13#10 +

@@ -67,20 +67,24 @@ class AppController:
     def __init__(self):
         self.vars = self.configure()
         self.config_path = self.vars["config_path"]
+        self.icon_path = self.vars["icon_path"]
+
+        AppController.app = self
 
         # Initialize the IPC manager, config manager, wallpaper engine, and UI manager with the appropriate variables and configurations. 
-        # As well as passing the clases to each other as needed for callbacks and communication.
-        self.config = ConfigManager(self.config_path)
-        self.instance = IPCManager(self.config, self)
-        self.engine = WallpaperEngine(self.config)
-        self.ui = UIManager(self.engine, self.config, self, icon_path=self.vars["icon_path"])
+        self.config = self.ConfigManager()
+
+        self.config_values = self.config.load()
+
+        self.instance = self.IPCManager()
+        self.engine = self.WallpaperEngine()
+        self.ui = self.UIManager()
 
     def start(self):
         """Starts the application by starting the IPC listener thread, wallpaper shuffling thread, and system tray UI."""
         self.instance.enforce_single_instance()
         threading.Thread(target=self.instance.listen, daemon=True).start()
         self.engine.start()
-        self.ui.setup()
         self.ui.start()
 
     def stop(self):
@@ -90,7 +94,7 @@ class AppController:
         self.engine.stop()
         self.instance.socket.close()
         self.engine.running = False
-        os._exit(0)
+        sys.exit()
 
     def open_logs(self):
         """Opens the logs directory in the file explorer."""
@@ -102,20 +106,23 @@ class AppController:
         # ---------------- Find paths based on if it is in executable form or script form ----------------
 
         # Set the bool based on if it is frozen (executable) or not (script)
-        base_dir = Path(__file__).parent.parent.parent
-        is_frozen = not Path(base_dir / "../.." / "frozen.txt").exists()
+        base_dir = Path(__file__).parent.parent
+        is_frozen = not Path(base_dir / "frozen.txt").exists()
 
 
         # Set the paths based on the program state
         if is_frozen:
+            base_dir = Path(sys.executable).parent
             appdata = Path(os.getenv("APPDATA")) / "LivelyPlaylist"
             if appdata is None:
                 raise RuntimeError("APPDATA not found")
             logs_dir = appdata / "logs"
             config_path = appdata / "config.json"
+            icon_path = base_dir / "resources" / "images" / "logo.ico"
         elif not is_frozen:
             logs_dir = base_dir / "logs"
             config_path = base_dir / "config.json"
+            icon_path = base_dir / "resources" / "images" / "logo.ico"
 
         # ---------------- Setup Logging ----------------
         logs_dir.mkdir(parents=True, exist_ok=True)
@@ -143,300 +150,270 @@ class AppController:
             "base_dir": base_dir,
             "logs_dir": logs_dir,
             "config_path": config_path,
-            "icon_path": base_dir / "resources" / "images" / "logo.ico"
+            "icon_path": icon_path
         }
 
-class WallpaperEngine:
-    """Class that manages the wallpaper shuffling logic and interacts with the Lively Wallpaper command line tool."""
-    def __init__(self, config_manager=None):
-        self.thread = None
-        self.running = False
+    class WallpaperEngine:
+        """Class that manages the wallpaper shuffling logic and interacts with the Lively Wallpaper command line tool."""
+        def __init__(self):
+            self.thread = None
+            self.running = False
 
-        # Load config
-        self.config = config_manager.load()
-        self.config_path = config_manager.path
-        self.monitors = self.config["monitors"]
-        self.wallpaper_folder = self.config["wallpaper_folder"]
-        self.lively_path = self.config["lively_path"]
-        self.delay = self.config["delay"]
+            # Load config
+            self.app = AppController.app
+            self.config_manager = self.app.config
 
-    def start(self):
-        """Starts the wallpaper shuffling thread."""
-        if self.running:
-            logging.warning("Wallpaper shuffler is already running.")
-            return
-        
-        self.running = True
+            self.config_path = self.app.config_path
+            self.config = self.app.config_values
 
-        self.thread = threading.Thread(
-            target=self._loop, 
-            daemon=True
-        )
-        self.thread.start()
-        self.listen_for_config_changes(self.config_path)
-        logging.info("Started wallpaper shuffler thread.")
+            self.monitors = self.config["monitors"]
+            self.wallpaper_folder = self.config["wallpaper_path"]
+            self.lively_path = self.config["lively_path"]
+            self.delay = self.config["delay_seconds"]
 
-    def stop(self):
-        """Stops the wallpaper shuffling thread."""
-        self.running = False
+        def start(self):
+            """Starts the wallpaper shuffling thread."""
+            if self.running:
+                logging.warning("Wallpaper shuffler is already running.")
+                return
+            
+            self.running = True
 
-        if self.thread:
-            self.thread.join(timeout=5)
-            logging.info("Stopped wallpaper engine thread.")
-
-    def get_wallpaper(self, folder):
-        """Find wallpapers in the wallpaper folder and randomly pick one, then return the path to the wallpaper."""
-        folder = Path(folder)
-        if not folder.is_dir():
-            logging.error(f"Wallpaper folder not found: {folder}")
-            return None
-        
-        # List all the subfolders in the wallpaper folder, as each wallpaper is stored in its own folder with a LivelyInfo.json
-        folders = [
-            folder / f
-            for f in os.listdir(folder)
-            if (folder / f).is_dir() # Only include directories
-        ]
-
-        if not folders:
-            logging.warning(f"No wallpaper folders found in {folder}")
-            return None
-        
-        # Randomly pick a folder
-        wallpaper = random.choice(folders)
-        logging.info(f"Selected wallpapers: {wallpaper}")
-
-        return wallpaper
-
-    def _loop(self):
-        """Main loop that shuffles wallpapers at the specified interval."""
-        while self.running:
-            logging.info(f"Shuffling new wallpapers from {self.wallpaper_folder}...")
-            i = 0
-            while i < self.monitors:
-                monitor = i + 1  # Monitor numbers are 1-indexed
-                wallpaper = self.get_wallpaper(self.wallpaper_folder)
-
-                if wallpaper:
-                    # Runs the lively command line tool and uses the LivelyInfo.json as the wallpaper, allowing it to load local and web wallpapers
-                    try:
-                        logging.info(f"Setting wallpaper {wallpaper} on monitor {monitor}")
-                        subprocess.run([
-                                self.lively_path,
-                                "setwp",
-                                "--file", wallpaper,
-                                "--monitor", str(monitor)
-                            ],
-                            creationflags=subprocess.CREATE_NO_WINDOW,
-                            stdout=subprocess.DEVNULL,
-                            stderr=subprocess.DEVNULL,
-                            check=True
-                        )
-                    except subprocess.CalledProcessError as e:
-                        logging.error(f"Failed to set wallpaper {wallpaper} on monitor {monitor}: {e}")
-                i += 1
-
-            # Wait for a delay before running again
-            logging.info(f"Waiting for {self.delay} seconds before next shuffle...")
-            for _ in range(self.delay):
-                if not self.running:
-                    return
-                time.sleep(1)
-
-    def restart(self):
-        """Restarts the wallpaper shuffling thread with the new config values."""
-        logging.info("Restarting wallpaper shuffler with new config...")
-        self.stop()
-        self.start()
-
-    def listen_for_config_changes(self, config_path):
-        """
-        Listens for changes to the config file and calls the callback when it changes.
-        """
-        logging.info(f"Starting to watch config file for changes: {config_path}")
-        last_modified = os.path.getmtime(config_path)
-        while self.running:
-            time.sleep(1)
-            try:
-                current_modified = os.path.getmtime(config_path)
-                if current_modified != last_modified:
-                    logging.info("Config file changed, reloading...")
-                    last_modified = current_modified
-                    self.restart()
-            except Exception as e:
-                logging.error(f"Error watching config file: {e}")
-
-class IPCManager:
-    def __init__(self, config_manager, app_controller):
-        # Socket for single-instance enforcement and inter-process communication
-        config = config_manager.load()
-        self.port = config.get("port", 65432)
-        self.app_controller = app_controller
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-
-    def enforce_single_instance(self):
-        """
-        Enforces that only a single instance of the application is running by trying to bind to a specific port. 
-        If it fails, it sends a quit command to the existing instance 
-        and waits for it to shut down before allowing the new instance to continue starting up.
-        """
-        # Check for any other instances on port
-        try:
-            self.socket.bind(("127.0.0.1", self.port))
-            self.socket.listen(5)
-            logging.info("No other instances detected. Continuing startup.")
-
-        except OSError:  
-            self.send_command("quit") # Send quit command to the instance
-            # Wait until the instance has shutdown
-            for _ in range(20):
-                try:
-                    self.socket.bind(("127.0.0.1", self.port))
-                    self.socket.listen(5)
-                    logging.info("Successfully shut down first instance. Continuing startup")
-                    break
-                except OSError:
-                    time.sleep(0.2)
-
-    def send_command(self, cmd):
-            logging.info("Instance already running. Sending quit command...")
-
-            # Send command to the instance
-            try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.connect(("127.0.0.1", self.port))
-                s.sendall(cmd.encode("utf-8")) # Send command
-                s.close()
-                logging.info("Command sent to running instance.")
-            except:
-                logging.error("Could not contact running instance. It may not have shut down properly. Please manually close running instances and try again.")
-
-    # Listen for commands from other instances
-    def listen(self):
-        """
-        Listens for commands from other instances on a separate thread. 
-        The only command currently implemented is "quit", which will trigger the application to shut down.
-
-        """
-        while True:
-            try:
-                conn, _ = self.socket.accept()
-                cmd = conn.recv(1024).decode().strip()
-                if not cmd == None:
-                    logging.info(f"Received command: {cmd}")
-                # Handle the command
-                if cmd == "quit":
-                    # Stop the application via the AppController.stop method, which will cleanly shut down all threads and exit the application
-                    logging.info("Shutting down due to quit command.")
-                    self.app_controller.stop()
-                conn.close()
-            except Exception as e:
-                logging.error(f"IPC listen error: {e}")
-
-class ConfigManager:
-    """
-    Class that manages loading and saving the config file, as well as providing access to config values. 
-    It also expands environment variables in the paths when loading the config.
-    """
-    def __init__(self, path):
-        self.path = Path(path)
-        self.config = None
-
-    def load(self):
-        """Loads the config file and expands any environment variables in the paths, then returns the config as a dictionary."""
-        with open(self.path, "r", encoding="utf-8") as f:
-            raw = json.load(f)
-        
-        logging.info(f"Loaded config from {self.path}")
-        # Expand environment variables in paths
-        raw["lively_path"] = os.path.expandvars(raw.get("lively_path", ""))
-        raw["wallpaper_folder"] = os.path.expandvars(raw.get("wallpaper_folder", ""))
-
-        raw["delay"] = raw.get("delay_seconds", 1800)
-        raw["monitors"] = raw.get("monitors", [1])
-        
-        self.config = raw
-        return self.config
-    
-    def save(self):
-        """Saves the current config to the config file."""
-        if self.config is None:
-            logging.warning("No config to save.")
-            return
-        
-        with open(self.path, "w", encoding="utf-8") as f:
-            json.dump(self.config, f, indent=4)
-
-    def open(self):
-        """Opens the config file in the default text editor."""
-        os.startfile(self.path)
-        logging.info(f"Opened config at {self.path}")
-
-    def get(self, key, default=None):
-        """Gets a config value by key, with an optional default if the key is not found."""
-        return self.config.get(key, default)
-
-# Class that manages the system tray icon and menu, as well as user interactions with the menu
-class UIManager:
-    def __init__(self, engine, config_manager, app_controller, icon_path=None):
-        self.engine = engine
-        self.icon_path = icon_path
-        self.config_manager = config_manager
-        self.app_controller = app_controller
-        self.icon = None
-        self.config = config_manager.load()
-
-    def start(self):
-        """Starts the system tray icon and menu."""
-        logging.info("Starting tray icon.")
-        # Run the tray icon
-        try:
-            self.icon.run()
-        except KeyboardInterrupt:
-            self.engine.running = False
-            self.config["instance_socket"].close()
-
-    def stop(self):
-        """Stops the system tray icon and menu, and closes the network socket."""
-        logging.info("Stopping tray icon.")
-        self.engine.running = False
-        self.icon.stop()
-
-    def next_wallpaper(self):
-        """
-        Callback for when the 'Next Wallpaper' menu item is clicked,
-        which restarts the wallpaper shuffling thread to immediately shuffle to new wallpapers.
-        """
-        logging.info("Next Wallpaper clicked. Shuffling wallpapers...")
-        self.engine.stop()
-        self.engine.start()
-    
-    def setup(self):
-        """Sets up the system tray icon and menu, and loads the icon image from the file system."""
-        logging.info("Setting up tray icon and menu...")
-        # Load the tray icon image
-        try:
-            if self.icon_path:
-                icon_image = Image.open(self.icon_path)
-            logging.info("Loaded tray icon successfully")
-        except Exception as e:
-            logging.error(f"Failed to load tray icon: {e}")
-            sys.exit(1)
-
-        # Create the tray icon and menu
-        self.icon = pystray.Icon(
-            "LivelyPlaylist",
-            icon_image, 
-            "Lively Playlist", 
-            menu=pystray.Menu(
-                pystray.MenuItem("Open Config", lambda: self.config_manager.open()),
-                pystray.MenuItem("Open Logs", lambda : self.app_controller.open_logs()),
-                pystray.MenuItem("Next Wallpaper", lambda: self.next_wallpaper()),
-                pystray.MenuItem("Quit", lambda : self.app_controller.stop())
+            self.thread = threading.Thread(
+                target=self._loop, 
+                daemon=True
             )
-        )
+            self.thread.start()
+            logging.info("Started wallpaper shuffler thread.")
 
-        logging.info("Tray icon and menu set up successfully")
+        def stop(self):
+            """Stops the wallpaper shuffling thread."""
+            self.running = False
+
+            if self.thread:
+                self.thread.join(timeout=5)
+                logging.info("Stopped wallpaper engine thread.")
+
+        def get_wallpaper(self, folder):
+            """Find wallpapers in the wallpaper folder and randomly pick one, then return the path to the wallpaper."""
+            folder = Path(folder)
+            if not folder.is_dir():
+                logging.error(f"Wallpaper folder not found: {folder}")
+                return None
+            
+            # List all the subfolders in the wallpaper folder, as each wallpaper is stored in its own folder with a LivelyInfo.json
+            folders = [
+                folder / f
+                for f in os.listdir(folder)
+                if (folder / f).is_dir() # Only include directories
+            ]
+
+            if not folders:
+                logging.warning(f"No wallpaper folders found in {folder}")
+                return None
+            
+            # Randomly pick a folder
+            wallpaper = random.choice(folders)
+            logging.info(f"Selected wallpapers: {wallpaper}")
+
+            return wallpaper
+
+        def _loop(self):
+            """Main loop that shuffles wallpapers at the specified interval."""
+            while self.running:
+                logging.info(f"Shuffling new wallpapers from {self.wallpaper_folder}...")
+                i = 0
+                while i < self.monitors:
+                    monitor = i + 1  # Monitor numbers are 1-indexed
+                    wallpaper = self.get_wallpaper(self.wallpaper_folder)
+
+                    if wallpaper:
+                        # Runs the lively command line tool and uses the LivelyInfo.json as the wallpaper, allowing it to load local and web wallpapers
+                        try:
+                            logging.info(f"Setting wallpaper {wallpaper} on monitor {monitor}")
+                            subprocess.run([
+                                    self.lively_path,
+                                    "setwp",
+                                    "--file", wallpaper,
+                                    "--monitor", str(monitor)
+                                ],
+                                creationflags=subprocess.CREATE_NO_WINDOW,
+                                stdout=subprocess.DEVNULL,
+                                stderr=subprocess.DEVNULL,
+                                check=True
+                            )
+                        except subprocess.CalledProcessError as e:
+                            logging.error(f"Failed to set wallpaper {wallpaper} on monitor {monitor}: {e}")
+                    i += 1
+
+                # Wait for a delay before running again
+                logging.info(f"Waiting for {self.delay} seconds before next shuffle...")
+                for _ in range(self.delay):
+                    if not self.running:
+                        return
+                    time.sleep(1)
+
+        def restart(self):
+            """Restarts the wallpaper shuffling thread with the new config values."""
+            logging.info("Restarting wallpaper shuffler with new config...")
+            self.stop()
+            self.start()
+
+    class IPCManager:
+        def __init__(self):
+            # Socket for single-instance enforcement and inter-process communication
+            self.app = AppController.app
+            config = self.app.config_values
+
+            self.port = config.get("port", 65432)
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+
+        def enforce_single_instance(self):
+            """
+            Enforces that only a single instance of the application is running by trying to bind to a specific port. 
+            If it fails, it sends a quit command to the existing instance 
+            and waits for it to shut down before allowing the new instance to continue starting up.
+            """
+            # Check for any other instances on port
+            try:
+                self.socket.bind(("127.0.0.1", self.port))
+                self.socket.listen(5)
+                logging.info("No other instances detected. Continuing startup.")
+
+            except OSError:  
+                self.send_command("quit") # Send quit command to the instance
+                # Wait until the instance has shutdown
+                for _ in range(20):
+                    try:
+                        self.socket.bind(("127.0.0.1", self.port))
+                        self.socket.listen(5)
+                        logging.info("Successfully shut down first instance. Continuing startup")
+                        break
+                    except OSError:
+                        time.sleep(0.2)
+
+        def send_command(self, cmd):
+                logging.info("Instance already running. Sending quit command...")
+
+                # Send command to the instance
+                try:
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.connect(("127.0.0.1", self.port))
+                    s.sendall(cmd.encode("utf-8")) # Send command
+                    s.close()
+                    logging.info("Command sent to running instance.")
+                except:
+                    logging.error("Could not contact running instance. It may not have shut down properly. Please manually close running instances and try again.")
+
+        # Listen for commands from other instances
+        def listen(self):
+            """
+            Listens for commands from other instances on a separate thread. 
+            The only command currently implemented is "quit", which will trigger the application to shut down.
+
+            """
+            while True:
+                try:
+                    conn, _ = self.socket.accept()
+                    cmd = conn.recv(1024).decode().strip()
+                    if not cmd == None:
+                        logging.info(f"Received command: {cmd}")
+                    # Handle the command
+                    if cmd == "quit":
+                        # Stop the application via the AppController.stop method, which will cleanly shut down all threads and exit the application
+                        logging.info("Shutting down due to quit command.")
+                        self.app.stop()
+                    conn.close()
+                except Exception as e:
+                    logging.error(f"IPC listen error: {e}")
+
+    class ConfigManager:
+        """
+        Class that manages loading and saving the config file, as well as providing access to config values. 
+        It also expands environment variables in the paths when loading the config.
+        """
+        def __init__(self):
+            self.app = AppController.app
+            self.path = self.app.config_path
+            self.config = None
+
+        def load(self):
+            """Loads the config file and expands any environment variables in the paths, then returns the config as a dictionary."""
+            with open(self.path, "r", encoding="utf-8") as f:
+                self.config = json.load(f)
+            
+            logging.info(f"Loaded config from {self.path}")
+            
+            return self.config
+
+        def open(self):
+            """Opens the config file in the default text editor."""
+            os.startfile(self.path)
+            logging.info(f"Opened config at {self.path}")
+
+        def get(self, key, default=None):
+            """Gets a config value by key, with an optional default if the key is not found."""
+            return self.config.get(key, default)
+
+    # Class that manages the system tray icon and menu, as well as user interactions with the menu
+    class UIManager:
+        def __init__(self):
+            self.app = AppController.app
+
+            self.engine = self.app.engine
+            self.icon_path = self.app.icon_path
+            self.config_manager = self.app.config
+            self.icon = None
+            self.config = self.app.config_values
+
+        def start(self):
+            """Starts the system tray icon and menu."""
+            logging.info("Starting tray icon...")
+            self.setup()
+            try:
+                self.icon.run()
+                logging.info("Tray icon and menu set up successfully")
+            except Exception as e:
+                logging.error(f"Error occurred while setting up tray icon: {e}")
+
+        def stop(self):
+            """Stops the system tray icon and menu, and closes the network socket."""
+            logging.info("Stopping tray icon.")
+            self.engine.running = False
+            self.icon.stop()
+
+        def next_wallpaper(self):
+            """
+            Callback for when the 'Next Wallpaper' menu item is clicked,
+            which restarts the wallpaper shuffling thread to immediately shuffle to new wallpapers.
+            """
+            logging.info("Next Wallpaper clicked. Shuffling wallpapers...")
+            self.engine.restart()
+        
+        def setup(self):
+            """Sets up the system tray icon and menu, and loads the icon image from the file system."""
+            logging.info("Setting up tray icon and menu...")
+            # Load the tray icon image
+            try:
+                if self.icon_path:
+                    icon_image = Image.open(self.icon_path)
+                logging.info("Loaded tray icon successfully")
+            except Exception as e:
+                logging.error(f"Failed to load tray icon: {e}")
+                sys.exit(1)
+
+            # Create the tray icon and menu
+            self.icon = pystray.Icon(
+                "LivelyPlaylist",
+                icon_image, 
+                "Lively Playlist", 
+                menu=pystray.Menu(
+                    pystray.MenuItem("Open Config", lambda: self.config_manager.open()),
+                    pystray.MenuItem("Open Logs", lambda : self.app.open_logs()),
+                    pystray.MenuItem("Next Wallpaper", lambda: self.next_wallpaper()),
+                    pystray.MenuItem("Quit", lambda : self.app.stop())
+                )
+            )
 
 if __name__ == "__main__":
     app = AppController()
