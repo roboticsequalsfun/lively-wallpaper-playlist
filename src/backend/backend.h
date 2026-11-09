@@ -1,6 +1,16 @@
-def main():
-    print("Hello World")
+#pragma once
 
+// System includes (e.g., <vector>, <string>)
+// Project includes (e.g., "other_header.h")
 
-if __name__ == "__main__":
-    main()
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// ============================================================================
+// Declarations (structs, classes, function prototypes, constants)
+// ============================================================================
+
+#ifdef __cplusplus
+}
+#endif
