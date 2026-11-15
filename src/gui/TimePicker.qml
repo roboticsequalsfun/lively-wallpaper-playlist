@@ -1,5 +1,5 @@
-pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
 
@@ -42,10 +42,8 @@ Popup {
             function formatText(count, modelData, pad) {
                 var data = count === 12 ? modelData + 1 : modelData;
                 if (pad) {
-                    console.log("Formatted data:", data);
                     return data < 10 ? "0" + data : data.toString();
                 }
-                console.log("Data:", data);
                 return data.toString();
             }
         }
@@ -71,17 +69,22 @@ Popup {
             bottomPadding: 10
             topPadding: 10
 
+            property var display: configSettings.getValueFromDisplay(configSettings.getSetting(ConfigSettings.Delay))
+
             Tumbler {
                 id: hoursTumbler
                 width: 60
+
                 model: 13
                 delegate: delegateComponent
+                currentIndex: row.display.hours
                 property bool padZeroes: false // Disable padding for hours
             }
 
             Label {
                 text: ":"
                 width: 10
+
                 color: Theme.colorPalette.text
                 font.family: Theme.fonts.main
                 font.pixelSize: 25
@@ -91,57 +94,60 @@ Popup {
             Tumbler {
                 id: minutesTumbler
                 width: 60
+
                 model: 60
                 delegate: delegateComponent
+                currentIndex: row.display.minutes
                 property bool padZeroes: true  // Enable padding for minutes
             }
 
             Label {
                 text: ":"
                 width: 10
+
                 color: Theme.colorPalette.text
                 font.family: Theme.fonts.main
                 font.pixelSize: 25
+
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Tumbler {
                 id: secondsTumbler
                 width: 60
+
                 model: 60
+                currentIndex: row.display.seconds
                 delegate: delegateComponent
                 property bool padZeroes: true  // Enable padding for seconds
             }
         }
 
-        Button {
+        SettingsButton {
             id: confirm
             width: 65
             height: 30
+
+            labelText: "Confirm"
+            border: 0
             anchors.horizontalCenter: parent.horizontalCenter
 
-            background: Rectangle {
-                radius: 8
-                anchors.fill: parent
-
-                color: confirm.pressed
-                       ? Theme.colorPalette.settingsButton.pressed
-                       : confirm.hovered
-                         ? Theme.colorPalette.settingsButton.hover
-                         : Theme.colorPalette.settingsButton.normal
-
-                border.width: 1.5
-                border.color: Theme.colorPalette.settingsButton.border
-            }
-
-            Text {
-                text: "Confirm"
-                color: Theme.colorPalette.text
-                anchors.centerIn: parent
-                font.pixelSize: 15
-                font.family: Theme.fonts.main
+            onClicked: {
+                configSettings.saveSetting(
+                    ConfigSettings.Delay,
+                    configSettings.convertDisplayToSec(
+                        hoursTumbler.currentItem.text,
+                        minutesTumbler.currentItem.text,
+                        secondsTumbler.currentItem.text,
+                    )
+                )
+                configSettings.changeText(
+                    hoursTumbler.currentItem.text +
+                    ":" +  minutesTumbler.currentItem.text +
+                    ":" + secondsTumbler.currentItem.text
+                )
+                popup.close()
             }
         }
     }
 }
-

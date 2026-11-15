@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Item {
-    property string labelText : "Button"
+    property string labelText : "Panel. A panel. That's what I am."
 
     Layout.fillWidth: true
     height: 65

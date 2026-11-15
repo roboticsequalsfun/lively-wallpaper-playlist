@@ -1,7 +1,7 @@
 {
-    "dark_mode": false,
-    "delay_seconds": 3700,
-    "lively_path": "C:\\Users\\CalebL\\AppData\\Local\\Programs\\Lively Wallpaper\\Lively.exe",
+    "dark_mode": true,
+    "delay_seconds": 1377,
+    "lively_path": "C:\\Program Files\\Lively Wallpaper\\Lively.exe",
     "monitors": 2,
     "port": 65432,
     "wallpaper_path": "C:\\Users\\CalebL\\Videos\\lively_wallpapers\\lively-save\\SaveData\\wptmp"

@@ -3,7 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 Button {
-    property string labelText: "Button"
+    property string labelText: "I'm a button, man!"
+    property real border: 1.5
     id: button
     width: 65
     height: 30
@@ -18,7 +19,7 @@ Button {
                  ? Theme.colorPalette.settingsButton.hover
                  : Theme.colorPalette.settingsButton.normal
 
-        border.width: 1.5
+        border.width: button.border
         border.color: Theme.colorPalette.settingsButton.border
     }
 

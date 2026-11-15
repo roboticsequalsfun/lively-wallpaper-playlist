@@ -5,7 +5,7 @@ import QtQuick.Controls
 
 Button {
     id: button
-    property string labelText: "Button"
+    property string labelText: "I'm a button, capisce?"
     property real buttonRadius: 8
     default property alias contentData: container.data
     Layout.preferredWidth: 90

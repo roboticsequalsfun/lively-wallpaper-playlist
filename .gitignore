@@ -2,7 +2,6 @@
 venv/
 logs/
 issues/
-.github/
 *.pptx
 *.docx
 .cache/

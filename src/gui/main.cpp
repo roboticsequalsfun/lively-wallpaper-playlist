@@ -5,12 +5,14 @@
 #include <QQmlContext>
 #include <QFile>
 #include "configSettings.h"
+#include "fileManager.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Material");
 
+    FileManager fileManager;
     ConfigSettings configSettings;
     QQmlApplicationEngine engine;
 
@@ -24,6 +26,7 @@ int main(int argc, char *argv[])
     engine.addImportPath("C:/Libraries/QWindowKit/qml");
 
     QWK::registerTypes(&engine);
+    engine.rootContext()->setContextProperty("fileManager", &fileManager);
     engine.rootContext()->setContextProperty("configSettings", &configSettings);
     engine.loadFromModule("gui", "Main");
 

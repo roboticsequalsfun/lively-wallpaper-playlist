@@ -8,56 +8,17 @@
 #include <QString>
 #include <QVariant>
 #include <filesystem>
-#include <windows.h>
 #include <shlobj.h>
+#include <filesystem>
 #include <QDir>
 
 namespace fs = std::filesystem;
 using namespace std;
 
-ConfigSettings::ConfigSettings(QObject *parent)
+ConfigSettings::ConfigSettings(QObject *parent) 
     : QObject(parent)
 {
-    // Get the current file path and directory path
-    string file_path = __FILE__;
-    string dir_path = file_path.substr(0, file_path.rfind("\\"));
-
-    // Determine the file path based on the environment
-    bool testingEnvironment = isInTestingEnvironment();
-    m_filePath = QString::fromStdString(dir_path) + (testingEnvironment ? "/Lively Playlist/config.json" : "/../../config.json");
-
     m_settings = loadSettings();
-}
-
-QString ConfigSettings::getRoamingPath() {
-    std::filesystem::path standard_path;
-    PWSTR path_tmp;
-
-    auto get_folder_path_ret = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &path_tmp);
-
-    // Error handling: If the function fails, return an empty string
-    if (get_folder_path_ret != S_OK) {
-        CoTaskMemFree(path_tmp);
-        return QString();
-    }
-
-    // Convert the Windows path type to a string 
-    standard_path = path_tmp;
-    QString path = QString::fromStdString(standard_path.string());
-
-    // Free the memory allocated for the path
-    CoTaskMemFree(path_tmp);
-
-    return path;
-}
-
-bool ConfigSettings::isInTestingEnvironment() {
-    for (const auto & entry : fs::directory_iterator("./")) {   
-        if (entry.is_directory() && entry.path().filename() == "frozen") {
-            return true;
-        }
-    }
-    return false;
 }
 
 QJsonObject ConfigSettings::loadSettings() {
@@ -82,12 +43,46 @@ QJsonObject ConfigSettings::loadSettings() {
     return json;
 }
 
+void ConfigSettings::showMessage(QString title, QString message) {
+    emit messageRequested(title, message);
+}
+
+void ConfigSettings::changeText(QString text) {
+    emit textChangeRequested(text);
+}
+
+QString ConfigSettings::validateWallpaperPath(QString path) {
+    filesystem::path std_path(path.toStdString());
+    QString last_element = QString::fromStdString(std_path.filename().string());
+
+    if (last_element != "wptmp")
+        std_path /= "SaveData/wptmp";
+    else if (last_element == "SaveData")
+        std_path /= "wptmp";
+
+    if (filesystem::exists(std_path)) {
+        return QString::fromStdString(std_path.string());
+    } else {
+        showMessage("Invalid Path", "The provided directory is not a lively wallpaper directory. Please select a valid path.");
+        return QString();
+    }
+}
+
 void ConfigSettings::saveSetting(Type type, const QVariant& data) {
-    QString cleaned_path = "";
+    QString path = "";
 
     if (type == Type::LivelyPath || type == Type::WallpaperPath) {
-        QUrl url = data.toUrl();
-        cleaned_path = url.toLocalFile();
+        path = QUrl(data.toString()).toLocalFile();
+
+        if (type == Type::WallpaperPath) {
+            path = validateWallpaperPath(path);
+
+            if (path.isEmpty()) {
+                return;
+            }
+        }
+
+        path.replace('/', '\\');
     }
 
     switch (type) {
@@ -95,10 +90,10 @@ void ConfigSettings::saveSetting(Type type, const QVariant& data) {
             writeKey("monitors", data);
             break;
         case Type::LivelyPath:
-            writeKey("lively_path", cleaned_path);
+            writeKey("lively_path", path);
             break;
         case Type::WallpaperPath:
-            writeKey("wallpaper_path", cleaned_path);
+            writeKey("wallpaper_path", path);
             break;
         case Type::Delay:
             writeKey("delay_seconds", data);
@@ -124,6 +119,8 @@ QVariant ConfigSettings::getSetting(Type type) {
             return QVariant(convertSecToDisplay(m_settings["delay_seconds"].toInt()));
         case Type::DarkMode:
             return QVariant(m_settings["dark_mode"].toBool());
+        case Type::Environment:
+            return QVariant(m_settings["environment"].toString());
         default:
             return {};
     }
@@ -142,8 +139,35 @@ QString ConfigSettings::convertSecToDisplay(int n)
     int seconds = n;
     
     // Format the result as a string in the format "HH:MM:SS"
-    QString value = QString::number(hour) + ":" + QString::number(minutes) + ":" + QString::number(seconds);
+
+    QString value = QString::asprintf("%01d:%02d:%02d", hour, minutes, seconds);
     return value;
+}
+
+QVariantMap ConfigSettings::getValueFromDisplay(QString displayValue) {
+    // Split the display value into hours, minutes, and seconds
+    QVariantMap map;
+    map.insert("hours", 0);
+    map.insert("minutes", 0);
+    map.insert("seconds", 0);
+
+    QStringList parts = displayValue.split(':');
+    if (parts.size() != 3) {
+        return map;
+    }
+
+    map.insert("hours", parts[0].toInt());
+    map.insert("minutes", parts[1].toInt());
+    map.insert("seconds", parts[2].toInt());
+
+    return map;
+}
+
+int ConfigSettings::convertDisplayToSec(QString hours, QString minutes, QString seconds)
+{
+    // Convert hours, minutes, and seconds to total seconds
+    int totalSeconds = hours.toInt() * 3600 + minutes.toInt() * 60 + seconds.toInt();
+    return totalSeconds;
 }
 
 void ConfigSettings::writeKey(QString key, const QVariant& data) {
