@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QString>
-#include <qqmlregistration.h>
+#include <QtQml/qqmlregistration.h>
 #include <QVariant>
 
 class ConfigSettings : public QObject

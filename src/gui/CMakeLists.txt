@@ -8,7 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_PREFIX_PATH "C:/Libraries/QWindowKit")
 list(APPEND CMAKE_QML_IMPORT_PATH "C:/Libraries/QWindowKit/qml")
-set(QML_IMPORT_PATH "C:/Libraries/QWindowKit/qml" CACHE STRING "QML Import Path" FORCE)
+set(QWindowKit_DIR
+    "C:/Libraries/QWindowKit/lib/cmake/QWindowKit"
+)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick QuickControls2)
 find_package(QWindowKit REQUIRED COMPONENTS Quick)
@@ -31,10 +33,11 @@ target_sources(appgui PRIVATE
 )
 
 target_include_directories(appgui PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/managers
 )
 
-set_source_files_properties(Theme.qml
+set_source_files_properties(qml/Theme.qml
     PROPERTIES
         QT_QML_SINGLETON_TYPE TRUE
 )
@@ -44,33 +47,34 @@ qt_add_qml_module(appgui
     VERSION 1.0
 
     QML_FILES
-        Main.qml
-        HomePage.qml
-        GroupingPage.qml
-        RulesPage.qml
-        SettingsPage.qml
-        Panel.qml
-        Theme.qml
-        BugReport.qml
-        TimePicker.qml
-        LightSwitch.qml
-        SettingsButton.qml
-        TopbarButton.qml
+        qml/Main.qml
+        qml/pages/HomePage.qml
+        qml/pages/GroupingPage.qml
+        qml/pages/RulesPage.qml
+        qml/pages/SettingsPage.qml
+        qml/components/Panel.qml
+        qml/Theme.qml
+        qml/BugReport.qml
+        qml/components/TimePicker.qml
+        qml/components/LightSwitch.qml
+        qml/components/SettingsButton.qml
+        qml/components/TopbarButton.qml
+        qml/components/MonitorSpinBox.qml
+        qml/components/InformationDialog.qml
     SOURCES
-    configSettings.h
-        configSettings.cpp
-        QML_FILES MonitorSpinBox.qml
-        QML_FILES
-        QML_FILES InformationDialog.qml
-        SOURCES communicator.h communicator.cpp
-        SOURCES fileManager.h fileManager.cpp
+    	src/configSettings.h
+        src/configSettings.cpp
+        src/managers/communicator.h 
+	src/managers/communicator.cpp
+        src/managers/fileManager.h 
+	src/managers/fileManager.cpp
+        src/globals.h 
+	src/globals.cpp
+        QML_FILES qml/components/Dashboard.qml
+        QML_FILES qml/components/TopBar.qml
 )
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
 set_target_properties(appgui PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appgui
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE

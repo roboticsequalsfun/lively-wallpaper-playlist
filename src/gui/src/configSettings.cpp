@@ -8,9 +8,9 @@
 #include <QString>
 #include <QVariant>
 #include <filesystem>
-#include <shlobj.h>
 #include <filesystem>
 #include <QDir>
+#include "globals.h"
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -18,6 +18,7 @@ using namespace std;
 ConfigSettings::ConfigSettings(QObject *parent) 
     : QObject(parent)
 {
+    m_filePath = g_env + "config.json";
     m_settings = loadSettings();
 }
 

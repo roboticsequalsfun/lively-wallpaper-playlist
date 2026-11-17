@@ -12,6 +12,6 @@ public:
     Q_INVOKABLE void openLogs();
     Q_INVOKABLE void createLogReport();
 private:
-    ConfigSettings *m_configSettings;
+    ConfigSettings *m_configSettings = nullptr;
     QString m_env;
 };

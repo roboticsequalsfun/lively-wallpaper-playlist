@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtCore
 import QtQuick.Controls
 import QtQuick.Dialogs
+import "../components"
+
 Item {
     ColumnLayout {
         id: panels

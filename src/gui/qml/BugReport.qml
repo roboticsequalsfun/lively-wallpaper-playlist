@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Window
 import QWindowKit
+import "components"
+import "pages"
 
 Window {
     id: window
@@ -89,24 +91,32 @@ Window {
                 labelText: "Create Report Log"
                 anchors.right: parent.right
                 anchors.left: parent.left
+
+                onClicked: fileManager.createLogReport()
             }
 
             SettingsButton {
                 labelText: "Report Bug"
                 anchors.right: parent.right
                 anchors.left: parent.left
+
+                onClicked: Qt.openUrlExternally("https://github.com/roboticsequalsfun/lively-wallpaper-playlist/issues/new?template=bug_report.md")
             }
 
             SettingsButton {
                 labelText: "Open Log"
                 anchors.right: parent.right
                 anchors.left: parent.left
+
+                onClicked: fileManager.openLogs()
             }
 
             SettingsButton {
                 labelText: "Open Config"
                 anchors.right: parent.right
                 anchors.left: parent.left
+
+                onClicked: fileManager.openConfig()
             }
         }
     }

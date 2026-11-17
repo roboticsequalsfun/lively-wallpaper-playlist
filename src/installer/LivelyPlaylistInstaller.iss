@@ -2,7 +2,7 @@
 #define AppExe "LivelyPlaylist.exe"
 #define AppPublisher "RoboticsEqualsFun"
 ; REMEBER TO CHANGE THIS EVERY VERSION!!!
-#define Version "2.1.3"
+#define Version "2.1.4"
 
 [Setup]
 AppName={#AppName}
@@ -73,14 +73,21 @@ begin
     exit;
   end;
 
-  LivelyPath := ExpandConstant('{pf}\Lively Wallpaper\Lively.exe');
+  LivelyPath := ExpandConstant('{commonpf32}\Lively Wallpaper\Lively.exe');
   if FileExists(ExpandConstant(LivelyPath)) then
   begin
     Result := LivelyPath;
     exit;
   end;
   
-  LivelyPath := ExpandConstant('{userlocalappdata}12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\LocalCache\Local\Lively Wallpaper\Lively.exe');
+  LivelyPath := ExpandConstant('{commonpf64}\Lively Wallpaper\Lively.exe');
+  if FileExists(ExpandConstant(LivelyPath)) then
+  begin
+    Result := LivelyPath;
+    exit;
+  end;
+  
+  LivelyPath := ExpandConstant('{localappdata}Packages\12030rocksdanister.LivelyWallpaper_97hta09mmv6hy\LocalCache\Local\Lively Wallpaper\Lively.exe');
   if FileExists(ExpandConstant(LivelyPath)) then
   begin
     Result := LivelyPath;
