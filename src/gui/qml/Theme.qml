@@ -28,14 +28,13 @@ Item {
         readonly property var _activeSource: root.isDarkMode ? darkColors : lightColors
 
         readonly property color background: _activeSource.background
-        readonly property color panel: _activeSource.panel
-        readonly property color topbar: _activeSource.topbar
+        readonly property color widget: _activeSource.widget
+        readonly property color dashboard: _activeSource.dashboard
         readonly property color text: _activeSource.text
         readonly property LightSwitch lightSwitch: _activeSource.lightSwitch
         readonly property Button button: _activeSource.button
         readonly property SettingsButton settingsButton: _activeSource.settingsButton
         readonly property Popup popup: _activeSource.popup
-        readonly property Menu menu: _activeSource.menu
         readonly property SpinBox spinBox: _activeSource.spinBox
     }
 
@@ -93,6 +92,12 @@ Item {
         readonly property string sun: "qrc:/resources/images/sunWhite.png"
     }
 
+    component Dashboard: QtObject {
+        property color background
+        property color divider
+        property color sectionText
+    }
+
     component LightSwitch: QtObject {
         property color back
         property color front
@@ -113,14 +118,8 @@ Item {
     }
 
     component Popup: QtObject {
-        property color background: "#FFFFFF"
-        property color border: "#CCCCCC"
-    }
-
-    component Menu: QtObject {
         property color background
-        property color hover
-        property color pressed
+        property color border
     }
 
     component SpinBox: QtObject {
@@ -137,10 +136,15 @@ Item {
     component LightColors: QtObject {
         id: lightColors
 
-        readonly property color background: "#F0F0F0"
-        readonly property color panel: "#FBFBFB"
-        readonly property color topbar: "#E0E0E0"
-        readonly property color text: "#1F1F1F"
+        readonly property color background: "#FAFAFC"
+        readonly property color widget: "#FBFBFB"
+        readonly property color text: "#333333"
+
+        readonly property Dashboard dashboard: Dashboard {
+            background: "#FFFFFF"
+            divider: "#E4E6E7"
+            sectionText: "#000073"
+        }
 
         readonly property LightSwitch lightSwitch: LightSwitch {
             back: "#CFD2DB"
@@ -166,12 +170,6 @@ Item {
             border: "#CCCCCC"
         }
 
-        readonly property Menu menu: Menu {
-            background: "#FFFFFF"
-            hover: "#F5F5F5"
-            pressed: "#F9F9F9"
-        }
-
         readonly property SpinBox spinBox: SpinBox {
             background: "#F5F5F5"
             textSelected: "#FFFFFF"
@@ -188,9 +186,14 @@ Item {
         id: darkColors
 
         readonly property color background: "#272727"
-        readonly property color panel:      "#323232"
-        readonly property color topbar:     "#1F1F1F"
-        readonly property color text:       "#E0E0E0"
+        readonly property color widget: "#323232"
+        readonly property color text: "#E0E0E0"
+
+        readonly property Dashboard dashboard: Dashboard {
+            background: "#FFFFFF"
+            divider: "#E4E6E7"
+            sectionText: "#00000073"
+        }
 
         readonly property LightSwitch lightSwitch: LightSwitch {
             back: "#2B2C35"
@@ -214,12 +217,6 @@ Item {
         readonly property Popup popup: Popup {
             background: "#1E1E1E"
             border:     "#444444"
-        }
-
-        readonly property Menu menu: Menu {
-            background: "#121212"
-            hover: "#0A0A0A"
-            pressed: "#090909"
         }
 
         readonly property SpinBox spinBox: SpinBox {

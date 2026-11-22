@@ -72,6 +72,7 @@ qt_add_qml_module(appgui
 	src/globals.cpp
         QML_FILES qml/components/Dashboard.qml
         QML_FILES qml/components/TopBar.qml
+        QML_FILES qml/components/DashboardButton.qml
 )
 
 set_target_properties(appgui PROPERTIES

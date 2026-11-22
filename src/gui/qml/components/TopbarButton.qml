@@ -5,17 +5,15 @@ import QtQuick.Controls
 
 Button {
     id: button
-    property string labelText: "I'm a button, capisce?"
-    property real buttonRadius: 8
     default property alias contentData: container.data
-    Layout.preferredWidth: 90
-    Layout.preferredHeight: 40
-    Layout.maximumWidth: 90
-    Layout.maximumHeight: 40
+    Layout.preferredWidth: 36
+    Layout.preferredHeight: 36
+    Layout.maximumWidth: 36
+    Layout.maximumHeight: 36
     Layout.alignment: Qt.AlignVCenter
 
     background: Rectangle {
-        radius: button.buttonRadius
+        radius: 0
         anchors.fill: parent
 
         color: button.pressed
@@ -25,22 +23,10 @@ Button {
                  : Theme.colorPalette.button.normal
     }
 
-    Row {
+    Item {
+        id: container
         anchors.centerIn: parent
-        spacing: 10
-
-        Item {
-            id: container
-            height: 25
-            width: 25
-        }
-
-        Text {
-            text: button.labelText
-            color: Theme.colorPalette.text
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 15
-            font.family: Theme.fonts.main
-        }
+        height: 25
+        width: 25
     }
 }

@@ -1,23 +1,26 @@
 import QtQuick
 import QtQuick.Layouts
+import "../"
 
 Rectangle {
     id: topBar
-    color: Theme.colorPalette.topbar
+    color: Theme.colorPalette.dashboard.background
 
     property alias minButton: minButton
-    property alias expandButton: expandButton
     property alias closeButton: closeButton
 
     RowLayout {
         id: buttons
         anchors.fill: parent
+        spacing: 0
 
         Image {
+            Layout.preferredWidth: 14;
+            Layout.preferredHeight: 14;
             Layout.leftMargin: 10
             Layout.rightMargin: 10
+
             source: Theme.images.logo
-            width: 14; height: 14;
         }
 
         Text {
@@ -28,17 +31,22 @@ Rectangle {
         }
 
         Item {
+            Layout.preferredWidth: 59
+        }
+
+        Rectangle {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 2 / Screen.devicePixelRatio
+
+            color: Theme.colorPalette.dashboard.divider
+        }
+
+        Item {
             Layout.fillWidth: true
         }
 
         TopbarButton {
             id: minButton
-            buttonRadius: 0
-            labelText: ""
-            Layout.preferredWidth: 36
-            Layout.preferredHeight: 36
-            Layout.maximumWidth: 36
-            Layout.maximumHeight: 36
 
             Image {
                 source: Theme.images.minus
@@ -49,38 +57,32 @@ Rectangle {
             onClicked: window.showMinimized()
         }
 
-        TopbarButton {
-            id: expandButton
-            buttonRadius: 0
-            labelText: ""
-            Layout.preferredWidth: 36
-            Layout.preferredHeight: 36
-            Layout.maximumWidth: 36
-            Layout.maximumHeight: 36
+        // TopbarButton {
+        //     id: expandButton
+        //     buttonRadius: 0
+        //     labelText: ""
+        //     Layout.preferredWidth: 36
+        //     Layout.preferredHeight: 36
+        //     Layout.maximumWidth: 36
+        //     Layout.maximumHeight: 36
 
-            Image {
-                source: Theme.images.expand
-                width: 14; height: 14
-                anchors.centerIn: parent
-            }
+        //     Image {
+        //         source: Theme.images.expand
+        //         width: 14; height: 14
+        //         anchors.centerIn: parent
+        //     }
 
-            onClicked: {
-                if (window.visibility === Window.Maximized) {
-                    window.showNormal()
-                } else {
-                    window.showMaximized()
-                }
-            }
-        }
+        //     onClicked: {
+        //         if (window.visibility === Window.Maximized) {
+        //             window.showNormal()
+        //         } else {
+        //             window.showMaximized()
+        //         }
+        //     }
+        // }
 
         TopbarButton {
             id: closeButton
-            labelText: ""
-            buttonRadius: 0
-            Layout.preferredWidth: 36
-            Layout.preferredHeight: 36
-            Layout.maximumWidth: 36
-            Layout.maximumHeight: 36
 
             Image {
                 source: Theme.images.close

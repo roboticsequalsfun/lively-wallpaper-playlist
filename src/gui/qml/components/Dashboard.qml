@@ -2,186 +2,134 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../pages"
+import "../"
 
 Rectangle {
     property Loader loader
-    color: Theme.colorPalette.topbar
+    color: Theme.colorPalette.dashboard.background
 
-    // ColumnLayout {
-    //     id: topBar
-    //     anchors.top: parent.top
-    //     anchors.bottom: parent.bottom
+    ColumnLayout {
+        id: dashboard
+        anchors.fill: parent
+        spacing: 5
 
-    //     TopbarButton {
-    //         labelText: "Home"
-    //         buttonRadius: 8
+        DashboardButton {
+            labelText: "Home"
+            Layout.fillWidth: true
+            Layout.topMargin: 15
 
-    //         Image {
-    //             source: Theme.images.home
-    //             width: 25
-    //             height: 25
-    //         }
+            Image {
+                source: Theme.images.home
+                width: 20
+                height: 20
+            }
 
-    //         onClicked: {
-    //             loader.source = "pages/HomePage.qml"
-    //         }
-    //     }
+            onClicked: {
+                loader.source = "pages/HomePage.qml"
+            }
+        }
 
-    //     TopbarButton {
-    //         labelText: "Grouping"
-    //         buttonRadius: 8
-    //         Layout.preferredWidth: 110
-    //         Layout.maximumWidth: 110
+        DashboardButton {
+            labelText: "Grouping"
+            Layout.fillWidth: true
 
-    //         Image {
-    //             source: Theme.images.folder
-    //             width: 25
-    //             height: 25
-    //         }
+            Image {
+                source: Theme.images.folder
+                width: 20
+                height: 20
+            }
 
-    //         onClicked: {
-    //             loader.source = "pages/GroupingPage.qml"
-    //         }
-    //     }
+            onClicked: {
+                loader.source = "pages/GroupingPage.qml"
+            }
+        }
 
-    //     TopbarButton {
-    //         labelText: "Rules"
-    //         buttonRadius: 8
+        DashboardButton {
+            labelText: "Rules"
+            Layout.fillWidth: true
 
-    //         Image {
-    //             source: Theme.images.settings
-    //             width: 25
-    //             height: 25
-    //         }
+            Image {
+                source: Theme.images.settings
+                width: 20
+                height: 20
+            }
 
-    //         onClicked: {
-    //             loader.source = "pages/RulesPage.qml"
-    //         }
-    //     }
+            onClicked: {
+                loader.source = "pages/RulesPage.qml"
+            }
+        }
 
-    //     Item {
-    //         Layout.fillWidth: true
-    //         Layout.minimumWidth: 80
-    //     }
+        DashboardButton {
+            labelText: "Settings"
 
-    //     TopbarButton {
-    //         labelText: ""
-    //         buttonRadius: 8
-    //         Layout.preferredWidth: 40
-    //         Layout.maximumWidth: 40
+            Image {
+                source: Theme.images.gear
+                width: 20
+                height: 20
+            }
 
-    //         Image {
-    //             source: Theme.images.bug
-    //             width: 28
-    //             height: 28
-    //             anchors.centerIn: parent
-    //         }
+            onClicked: {
+                loader.source = "pages/SettingsPage.qml"
+            }
+        }
 
-    //         onClicked: {
-    //             var component = Qt.createComponent("BugReport.qml");
-    //             if (component.status === Component.Ready) {
-    //                 // Setting mainWindow as the parent manages memory lifecycle
-    //                 var win = component.createObject(Window);
-    //                 win.show();
-    //             } else {
-    //                 console.error("Error loading component:", component.errorString());
-    //             }
-    //         }
-    //     }
+        Item {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
 
-    //     TopbarButton {
-    //         labelText: ""
-    //         buttonRadius: 8
-    //         Layout.preferredWidth: 40
-    //         Layout.maximumWidth: 40
+        DashboardButton {
+            labelText: "Report a bug"
 
-    //         Image {
-    //             source: Theme.images.gear
-    //             width: 25
-    //             height: 25
-    //             anchors.centerIn: parent
-    //         }
+            Image {
+                source: Theme.images.bug
+                width: 20
+                height: 20
+            }
 
-    //         onClicked: {
-    //             loader.source = "pages/SettingsPage.qml"
-    //         }
-    //     }
+            onClicked: {
+                var component = Qt.createComponent("../BugReport.qml");
+                if (component.status === Component.Ready) {
+                    // Setting mainWindow as the parent manages memory lifecycle
+                    var win = component.createObject(Window);
+                    win.show();
+                } else {
+                    console.error("Error loading component:", component.errorString());
+                }
+            }
+        }
 
-    //     TopbarButton {
-    //         id: moreButton
-    //         labelText: ""
-    //         buttonRadius: 8
-    //         Layout.preferredWidth: 25
-    //         Layout.maximumWidth: 25
+        DashboardButton {
+            id: helpButton
+            labelText: "Help"
 
-    //         Image {
-    //             source: Theme.images.more
-    //             width: 25
-    //             height: 25
-    //             anchors.centerIn: parent
-    //         }
+            // Image {
+            //     source: Theme.images.about
+            //     width: 25
+            //     height: 25
+            //     anchors.centerIn: parent
+            // }
 
-    //         onClicked: menu.popup(moreButton.x, moreButton.y + moreButton.height)
-    //     }
+            onClicked: {
+                Qt.openUrlExternally("https://github.com/roboticsequalsfun/lively-wallpaper-playlist/blob/main/README.md")
+            }
+        }
 
-    //     Menu {
-    //         id: menu
-    //         width: 125
+        DashboardButton {
+            id: aboutButton
+            labelText: "About"
+            Layout.bottomMargin: 15
 
-    //         background: Rectangle {
-    //             color: Theme.colorPalette.menu.background
-    //             anchors.fill: parent
-    //             radius: 4
-    //         }
+            // Image {
+            //     source: Theme.images.about
+            //     width: 25
+            //     height: 25
+            //     anchors.centerIn: parent
+            // }
 
-    //         MenuItem {
-    //             id: menuItem
-    //             text: "Help"
-    //             height: 30
-
-    //             contentItem: Text {
-    //                 text: parent.text
-    //                 font.pointSize: 10
-    //                 font.family: Theme.fonts.main
-    //                 color: Theme.colorPalette.text
-    //                 horizontalAlignment: Text.AlignLeft
-    //                 verticalAlignment: Text.AlignVCenter
-    //             }
-
-    //             background: Rectangle {
-    //                 anchors.fill: parent
-    //                 color: parent.down ? Theme.colorPalette.menu.pressed : (parent.hovered ? Theme.colorPalette.menu.hover : Theme.colorPalette.menu.background)
-    //                 radius: 4
-    //             }
-
-    //             onClicked: {
-    //                 Qt.openUrlExternally("https://github.com/roboticsequalsfun/lively-wallpaper-playlist/blob/main/README.md")
-    //             }
-    //         }
-
-    //         MenuItem {
-    //             text: "About"
-    //             height: 30
-
-    //             contentItem: Text {
-    //                 text: parent.text
-    //                 font.pointSize: 10
-    //                 font.family: Theme.fonts.main
-    //                 color: Theme.colorPalette.text
-    //                 horizontalAlignment: Text.AlignLeft
-    //                 verticalAlignment: Text.AlignVCenter
-    //             }
-
-    //             background: Rectangle {
-    //                 anchors.fill: parent
-    //                 color: parent.down ? Theme.colorPalette.menu.pressed : (parent.hovered ? Theme.colorPalette.menu.hover : Theme.colorPalette.menu.background)
-    //                 radius: 4
-    //             }
-
-    //             onClicked: {
-    //                 Qt.openUrlExternally("https://github.com/roboticsequalsfun")
-    //             }
-    //         }
-    //     }
-    // }
+            onClicked: {
+                Qt.openUrlExternally("https://github.com/roboticsequalsfun")
+            }
+        }
+    }
 }

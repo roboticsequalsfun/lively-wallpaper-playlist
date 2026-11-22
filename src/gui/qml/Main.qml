@@ -9,8 +9,10 @@ ApplicationWindow {
     id: window
     width: 890
     height: 635
-    minimumWidth: 550
-    minimumHeight: 410
+    maximumHeight: 635
+    maximumWidth: 890
+    minimumHeight: 635
+    minimumWidth: 890
     visible: true
     title: qsTr("Lively Playlist")
 
@@ -31,34 +33,31 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignTop
         }
 
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 2
+
+            color: Theme.colorPalette.dashboard.divider
+        }
+
         RowLayout {
             Layout.fillWidth: true
             spacing: 0
 
-            // Dashboard {
-            //     id: dashboard
-            //     loader: pages
+            Dashboard {
+                id: dashboard
+                loader: pages
 
-            //     Layout.fillHeight: true
-            //     Layout.minimumWidth: 60
-            //     Layout.maximumWidth: 60
-            // }
+                Layout.fillHeight: true
+                Layout.preferredWidth: 180
+            }
 
             Rectangle {
                 Layout.fillHeight: true
-                Layout.minimumWidth: 125
-                Layout.maximumWidth: 175
-                Layout.preferredWidth: Math.round(Math.max(125, Math.min(175, 125 + ((window.width - 550) / 340) * 50)))
+                Layout.preferredWidth: 2
 
-                color: "blue"
+                color: Theme.colorPalette.dashboard.divider
             }
-
-            // Rectangle {
-            //     Layout.fillHeight: true
-            //     Layout.fillWidth: true
-
-            //     color: "green"
-            // }
 
             Item {
                 Layout.fillHeight: true
@@ -85,6 +84,5 @@ ApplicationWindow {
         // Ensure interactive items inside the title bar can still receive clicks
         windowAgent.setHitTestVisible(topBar.minButton, true)
         windowAgent.setHitTestVisible(topBar.closeButton, true)
-        windowAgent.setHitTestVisible(topBar.expandButton, true)
     }
 }

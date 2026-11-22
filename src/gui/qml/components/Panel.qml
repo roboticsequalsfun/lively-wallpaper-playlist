@@ -4,6 +4,8 @@ import QtQuick.Layouts
 
 Item {
     property string labelText : "Panel. A panel. That's what I am."
+    Layout.fillHeight: true
+    Layout.maximumHeight: 100
 
     Layout.fillWidth: true
     height: 65

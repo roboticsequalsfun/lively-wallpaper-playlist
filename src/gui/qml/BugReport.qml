@@ -61,12 +61,6 @@ Window {
 
                 TopbarButton {
                     id: closeButton
-                    labelText: ""
-                    buttonRadius: 0
-                    Layout.preferredWidth: 36
-                    Layout.preferredHeight: 36
-                    Layout.maximumWidth: 36
-                    Layout.maximumHeight: 36
 
                     Image {
                         source: Theme.images.close
