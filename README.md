@@ -187,6 +187,7 @@ Features are grouped by their general purpose rather than a specific release ver
 - [ ] **Per-monitor wallpaper control** – Assign specific wallpapers to certain monitors.
 - [ ] **Scheduled changes** – Change wallpapers based on time of day or custom schedule.
 - [ ] **Backup & restore settings** – Save user configurations for easy updating.
+- [ ] **Different wallpaper configurations** - Allow multiple different customizations/configuration of the same wallpaper.
 
 ### Advanced Features
 
